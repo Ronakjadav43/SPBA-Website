@@ -1,0 +1,39 @@
+"use client";;
+import { getHome } from "@/actions/home";
+import { HomeData } from "@/types";
+import { useQueries, UseQueryResult } from "@tanstack/react-query";
+import Organisers from "@/components/organisers/organisers";
+import About from "@/components/about/about";
+
+export default function Page() {
+    // const param = useParams();
+    // const slug = param;
+    // console.log(slug, "0000000000000000000000000");
+    
+  const queries = useQueries({
+    queries: [
+      {
+        queryKey: ["home"],
+        queryFn: () => getHome("about-spba"),
+      },
+    ],
+  }) as [UseQueryResult<HomeData[], Error>, UseQueryResult<HomeData, Error>];
+
+  const [home] = queries;
+
+  const homeData = home.data || undefined;
+
+
+  return (
+    <main>
+     <About homeData={homeData} />
+
+     <div className="max-w-[1200px] m-auto">
+
+      <Organisers homeData={homeData} />
+      </div>
+
+     
+    </main>
+  );
+}
